@@ -1,4 +1,4 @@
-# Mardown Babel
+# Markdown Babel
 
 This software is an solution equivalent for the 
 org-babel-tangle of org-mode.
@@ -10,7 +10,7 @@ that means only the codeblocks with a filename as a second parameter will
 be transfer to that file.
 
 ### codeblock taken
-'''markdown
+'''
 '''python3 hello.py
 print("hello world")
 '''
