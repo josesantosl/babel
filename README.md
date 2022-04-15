@@ -10,15 +10,19 @@ that means only the codeblocks with a filename as a second parameter will
 be transfer to that file.
 
 ### codeblock taken
-'''
+```markdow
 
-'''python3 hello.py
+
+```
+```python3 hello.py
 
 print("hello world")
 
-'''
+```
+```
 
-'''
+```
+
 
 this codeblock go to hello.py
 

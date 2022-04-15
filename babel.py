@@ -33,9 +33,9 @@ def tangle(filename):
 
     #search the codeblocks
     for line in fileread:
-        if "'''" in line and writing==True:
+        if "```" in line and writing==True:
             writing=False
-        elif "'''" in line and writing==False and len(line.split())==2:
+        elif "```" in line and writing==False and len(line.split())==2:
             newfilename=line.split()[1]
             counterCodeBlocks+=1
             if not newfilename in filenames:
@@ -45,7 +45,7 @@ def tangle(filename):
             writing=True
             writingFile = filenames.index(newfilename)
 
-        elif (not "'''" in line) and writing:
+        elif (not "```" in line) and writing:
             listTangledFiles[writingFile].writelines(line)
 
     for i in range(len(listTangledFiles)):
