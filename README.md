@@ -25,7 +25,7 @@ Write a README.md compiling a list of files in order. If you want to write a REA
 write
 
     
-    python3 babel.py readme module1.md, module2.md, module3.md
+    python3 babel.py readme module1.md module2.md module3.md
 
 
 the order will be:
