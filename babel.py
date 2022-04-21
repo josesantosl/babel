@@ -73,7 +73,7 @@ def tangle(filename):
 def readme():
     readmeFile= open("README.md",'w')
     fileread=None
-    for i in range(1,len(sys.argv)):
+    for i in range(2,len(sys.argv)):
         try:
             fileread = open(sys.argv[i],'r')
         except:
