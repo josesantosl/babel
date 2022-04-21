@@ -20,4 +20,17 @@ be transfer to that file.
 
 this codeblock go to hello.py
 
+## __readme__:
+Write a README.md compiling a list of files in order. If you want to write a README.md with the files module1.md, module2.md, module3.md you need to
+write
+
+    
+    python3 babel.py readme module1.md, module2.md, module3.md
+
+
+the order will be:
+
+    module1
+    module2
+    module3
 
