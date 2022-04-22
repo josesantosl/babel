@@ -10,7 +10,7 @@ that means only the codeblocks with a filename as a second parameter will
 be transfer to that file.
 
 ### codeblock taken
-    ```python3 hello.py
+    ```python hello.py
 
     print("hello world")
 
