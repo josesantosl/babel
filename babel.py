@@ -8,7 +8,7 @@ Description:
 This software is an equivalent solution for the 
 org-babel-tangle of org-mode.
 
-tangle:
+translate:
     take all the codeblocks with a filename after the lang specification.
 readme:
     write a README.md compiling a list of files in order.
@@ -18,12 +18,12 @@ readme:
 def main():
     if len(sys.argv)==1:
         help()
-    elif sys.argv[1] == "tangle":
+    elif sys.argv[1] == "translate":
         if len(sys.argv)==2:
             print("is missing a filename to convert")
             help()
         else:
-            tangle(sys.argv[2])
+            translate(sys.argv[2])
     elif sys.argv[1] == "help":
         help()
     elif sys.argv[1] == "readme":
@@ -32,19 +32,19 @@ def main():
         else:
             readme()
     else:
-        tangle(sys.argv[2])
+        translate(sys.argv[1])
 
 
 def help():
-    print("tangle:\n\ttake all the codeblocks with a filename after the lang specification")
+    print("translate:\n\ttake all the codeblocks with a filename after the lang specification")
     print("readme:\n\nwrite a README.md compiling a list of files in order.")
     
 
-def tangle(filename):
+def translate(filename):
     fileread = open(filename,'r').readlines()
     listTangledFiles=[]
     filenames = []
-    counterCodeBlocks = 0
+    counterCodeBlocks = []
 
     writing=False
     writingFile=0
@@ -55,20 +55,23 @@ def tangle(filename):
             writing=False
         elif "```" in line and writing==False and len(line.split())==2:
             newfilename=line.split()[1]
-            counterCodeBlocks+=1
             if not newfilename in filenames:
                 filenames.append(newfilename)
                 listTangledFiles.append(open(newfilename,'w'))
+                counterCodeBlocks.append(0)
             
             writing=True
             writingFile = filenames.index(newfilename)
+            counterCodeBlocks[writingFile]+=1
 
         elif (not "```" in line) and writing:
             listTangledFiles[writingFile].writelines(line)
 
     for i in range(len(listTangledFiles)):
         listTangledFiles[i].close()
-    print("tangled "+str(counterCodeBlocks)+" codeblocks.")
+    for i in range(len(listTangledFiles)):
+            print("translated "+str(counterCodeBlocks[i])+" codeblocks to "+listTangledFiles[i].name)
+
 
 def readme():
     readmeFile= open("README.md",'w')
