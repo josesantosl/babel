@@ -10,6 +10,8 @@ org-babel-tangle of org-mode.
 
 translate:
     take all the codeblocks with a filename after the lang specification.
+document:
+    write a MarkDown document with the same name of the file. 
 readme:
     write a README.md compiling a list of files in order.
 
@@ -31,13 +33,19 @@ def main():
             help()
         else:
             readme()
+    elif sys.argv[1] == "document":
+        if len(sys.argv)==2:
+            help()
+        else:
+            document()
     else:
-        translate(sys.argv[1])
+        help()
 
 
 def help():
-    print("translate:\n\ttake all the codeblocks with a filename after the lang specification")
-    print("readme:\n\nwrite a README.md compiling a list of files in order.")
+    print("translate:\n\ttake all the codeblocks with a filename after the lang specification.")
+    print("document:\n\twrite a MarkDown document with the same name of the file. Actually just working with /**/ comment blocks.")
+    print("readme:\n\twrite a README.md compiling a list of files in order.")
     
 
 def translate(filename):
@@ -71,6 +79,62 @@ def translate(filename):
         listTangledFiles[i].close()
     for i in range(len(listTangledFiles)):
             print("translated "+str(counterCodeBlocks[i])+" codeblocks to "+listTangledFiles[i].name)
+            
+
+def document():
+
+    #open read & write files.
+    filename,extension= sys.argv[2].split('.')
+    fileread = open(sys.argv[2],'r').readlines()
+    writingFile = open(filename+".md",'w')
+
+    #start start & close vars
+    start = '/*'
+    end   = '*/'
+
+    #soft languages
+    if extension in ['py','rb']:
+        start='"""'
+        end = '"""'
+
+    comment=False
+    code   =False
+
+    for line in fileread:
+        if not comment and not code and len(line)-1>0:
+            if start in line.split()[0] and line[0]!= " ":
+                comment=True
+            else:
+                code=True
+                writingFile.writelines("```"+extension+"\n")
+
+        if comment:#comment
+            if end in line:
+                writingFile.writelines(line.replace(end,""))
+                writingFile.writelines("```"+extension+"\n")
+                comment=False
+                code   =True
+            else:
+                writingFile.writelines(line)
+        else:#code
+            if start in line.split()[0] and line[0]!=" " and not end in line:
+                writingFile.writelines("```\n")
+                writingFile.writelines(line.replace(start,""))
+                comment=True
+                code   = False
+            elif start in line.split()[0] and line[0]!=" " and end in line and start!=end:
+                writingFile.writelines("```\n")
+                writingFile.writelines(line.replace(start,"").replace(end,""))
+                writingFile.writelines("```"+extension+"\n")
+
+            else:
+                writingFile.writelines(line)
+    if code:
+        writingFile.writelines("```")
+
+    #close file
+    writingFile.close()
+    print(sys.argv[2]+" convrted to "+filename+".md")
 
 
 def readme():
